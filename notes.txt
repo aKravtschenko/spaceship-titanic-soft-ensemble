@@ -1,0 +1,39 @@
+Beste Modelle ohne Optimierungsschritte:
+    - XGBClassifier (79.1 %) und SVC (79.07 %)
+
+Modell-Validierung:
+    - Crossval + Optuna + GridSearch
+
+Einfaches Featureengineering:
+    - Drop: PassengerId, Name, Cabin, Transported
+    - Nummerische Imputation mit SimpeleImputer -> Strategy = median
+    - Categorische Imputation mit SimpeleImputer -> Strategy = most_frequent
+    - Age zu 5 Bins (AgeGroup) und daraus mit OrdinalEncoder zur 1D-Serie mit faltten()
+    - VIP, CryoSleep zum Integer umwandeln vom Boolean
+    - HomePlanet und Destination mit pd.get_dummies OneHot-Encoden
+
+Komplexes Featureengineering:
+    - FamilySize = (LastName * GroupId) + (GroupId * Cabin)
+        - Drop: LastName, GroupId
+        - Bin: Small, Medium, Large -> Ordinal
+    - Cabin: Deck und Side -> Deck = Erster String, Side = Dritter String
+        - Drop: Cabin, Side (geringer Mehrwert)
+    - Balance = (RoomService + FoodCourt + ShoppingMall + Spa + VRDeck)
+        - Drop: Alle behalten
+        - Bin: qcut
+        - Fill: SimpeleImputer mit median
+    - CryoSleep, VIP: zum Integer umwandeln 
+        Fill: SimpeleImputer mit median
+    - Duration: 
+    - Drop: PassengerId, Transported
+
+
+
+Behalten:
+    - Deck/Trans: Deck T,E hat hohe Überlebungschancen und B,C hat geringe, sonst ~50/50.
+    - Cryo/Deck: spigelt Deck/Trans, da wenn nicht am schlafen, dann höhere Überlebungschancen
+Verwerfen:
+    - Side/Trans: Die Distribution ist 50/50 also wenig mehrwert
+
+Earth zu Trappist hat hohe Überlebungschancen, sonst 50/50
+    - CryoSleep zu Transported in diesem Zusammenhang hohe Correlation
