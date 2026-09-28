@@ -49,6 +49,8 @@ This notebook covers the complete machine learning lifecycle:
 
 The second notebook focuses on creating a reusable machine learning pipeline.
 
+![Pipeline-Overview](Spacheship-Pipeline-Overview.png)
+
 The preprocessing workflow consists of:
 
 1. A feature-generation pipeline for creating derived features.
